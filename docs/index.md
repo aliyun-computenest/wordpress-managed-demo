@@ -17,7 +17,7 @@
 ## 部署架构
 
 本部署架构为ECS+SLB+EIP，安全组开放租户指定的Wordpress（默认为8080）端口，通过公网EIP进行访问，架构图：
-![image.png](架构图.png)
+![image.png](wordpress-managed-arch.png)
 
 ## 服务构建计费说明
 
