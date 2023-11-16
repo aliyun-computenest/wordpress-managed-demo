@@ -1,0 +1,53 @@
+Service:
+  RegionId: cn-hangzhou
+  DeployType: ros
+  TenantType: SingleTenant
+  DeployMetadata:
+    ServiceInstanceNameRule:
+      Prefix: wp
+    SupplierDeployMetadata:
+      RoleName: ${RoleName}
+      SupplierTemplateConfigs:
+        - Name: 高可用版
+          Url: 'templates/template.yaml'
+          HiddenParameterKeys:
+            - VpcId
+            - VSwitchId
+            - ZoneId
+          ParameterMappings:
+            - ParameterKey: RegionId
+              ParameterMappingKeys:
+                - VpcId
+                - ZoneId
+                - VSwitchId
+              ParameterValueMapping:
+                cn-hangzhou:
+                  Parameters:
+                    VpcId: ${VpcId}
+                    ZoneId: ${ZoneId}
+                    VSwitchId: ${VSwitchId}
+      FileArtifactRelation:
+        '{{ computenest::file::wordpress }}':
+          ArtifactId: ${Artifact.Artifact_1.ArtifactId}
+          ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
+    TemplateConfigs:
+      - Name: 高可用版
+        Url: templates/parameters.yaml
+        AllowedRegions:
+          - cn-hangzhou
+  ServiceType: managed
+  ServiceInfo:
+    Locale: zh-CN
+    ShortDescription: WordPress demo
+    Image: 'icons/service_logo.jpg'
+    Name: WordPress托管版
+  ShareType: Public
+  ApprovalType: Manual
+Artifact:
+  Artifact_1:
+    ArtifactType: File
+    ArtifactName: WordPress
+    Description: WordPress
+    ArtifactProperty:
+      RegionId: cn-hangzhou
+      Url: 'artifacts/wordpress-6.2-zh_CN.tar.gz'
