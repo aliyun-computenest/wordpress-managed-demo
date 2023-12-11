@@ -11,6 +11,7 @@ Service:
       SupplierTemplateConfigs:
         - Name: 高可用版
           Url: 'templates/template.yaml'
+          PredefinedParameters: []
           HiddenParameterKeys:
             - VpcId
             - VSwitchId
