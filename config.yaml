@@ -45,6 +45,14 @@ Service:
     Name: WordPress托管版
   ShareType: Public
   ApprovalType: Manual
+  OperationMetadata:
+    StatusOperationConfigs:
+      - TemplateName: 高可用版
+        DeployScene: ECS
+        SupportOperations:
+          - Start
+          - Stop
+          - Restart
 Artifact:
   Artifact_1:
     ArtifactType: File
