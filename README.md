@@ -1,12 +1,21 @@
-详细说明请查看 [index.md](docs%2Findex.md)
+# 代码仓库结构
 
-文件说明
-
-| 文件路径                                | 说明                                                                                                                   |
-|-------------------------------------|----------------------------------------------------------------------------------------------------------------------|
-| config.yaml                         | 构建服务的配置文件，服务构建过程中会使用计算巢命令行工具[computenest-cli](https://pypi.org/project/computenest-cli/)，computenest-cli会基于该配置文件构建服务 |
-| parameters.yaml                     | 本服务为托管版单租，使用该文件渲染服务商需要配置的网络参数，包括VpcId，VSwitch等                                                                       |
-| artifact/wordpress-6.2-zh_CN.tar.gz | wordpress，构建过程会将该包发布为计算巢部署物                                                                                          |
-| icons/service_logo.jpg              | 构建服务默认的图标                                                                                                            |
-| templates/parameters.yaml           | 本服务为托管版单租服务，所以只需要用户填写一部分参数，通过该文件指定用户所填参数                                                                             |
-| templates/template.yaml             | ROS模板文件，ROS模板引擎根据该模板能够自动创建出所有的资源                                                                                     |
+文档目录说明：
+```
+├── README.md                                       - README
+├── docs                                            - 服务文档相关文件
+│   └── index.md
+├── resources                                       - 服务资源文件
+│   ├── icons
+│   │   └── service_logo.png                                - 服务logo
+│   └── artifact_resources                          - 部署物相关资源文件
+│       └── file                                    - 文件部署物目录
+│           ├── epel-release-latest-7.noarch.rpm    - epel安装包
+│           ├── remi-release-7.rpm                  - remi安装包
+│           └── wordpress-6.2-zh_CN.tar.gz          - wordpress文件部署物
+├── ros_templates                                   - 服务ROS模板，可以有多个
+│   └── cluster.yaml                                - 集群版ROS模板
+│   └── template.yaml                               - 单机版ROS模板
+├── config.yaml                                     - 服务配置文件
+├── preset_parameters.yaml                          - 服务商预设参数，如VpcId，VSwitchId等，该ros模板内容会渲染为表单方便服务商填写
+```
