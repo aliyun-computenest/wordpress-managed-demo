@@ -1,0 +1,301 @@
+ROSTemplateFormatVersion: '2015-09-01'
+Parameters:
+  PayType:
+    Type: String
+    Label:
+      en: ECS Instance Charge Type
+      zh-cn: 付费类型
+    Default: PostPaid
+    AllowedValues:
+    - PostPaid
+    - PrePaid
+    AssociationProperty: ChargeType
+    AssociationPropertyMetadata:
+      LocaleKey: InstanceChargeType
+  PayPeriodUnit:
+    Type: String
+    Label:
+      en: Pay Period Unit
+      zh-cn: 购买资源时长周期
+    Default: Month
+    AllowedValues:
+    - Month
+    - Year
+    AssociationProperty: PayPeriodUnit
+    AssociationPropertyMetadata:
+      Visible:
+        Condition:
+          Fn::Not:
+            Fn::Equals:
+            - "${PayType}"
+            - PostPaid
+  PayPeriod:
+    Type: Number
+    Label:
+      en: Period
+      zh-cn: 购买资源时长
+    Default: 1
+    AllowedValues:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+    - 6
+    - 7
+    - 8
+    - 9
+    AssociationProperty: PayPeriod
+    AssociationPropertyMetadata:
+      Visible:
+        Condition:
+          Fn::Not:
+            Fn::Equals:
+            - "${PayType}"
+            - PostPaid
+  EcsInstanceType:
+    Type: String
+    Label:
+      en: Instance Type
+      zh-cn: 实例类型
+    AssociationProperty: ALIYUN::ECS::Instance::InstanceType
+    AssociationPropertyMetadata:
+      ZoneId: "${ZoneId}"
+      InstanceChargeType: "${InstanceChargeType}"
+    AllowedValues:
+    - ecs.g6.large
+    - ecs.g6.xlarge
+    - ecs.g6.2xlarge
+    - ecs.g6.4xlarge
+    - ecs.g7.large
+    - ecs.g7.xlarge
+    - ecs.g7.2xlarge
+    - ecs.g7.4xlarge
+  SystemDiskSize:
+    Default: 40
+    Type: Number
+    Description:
+      zh-cn: 系统盘大小, 取值范围：[40, 500], 单位：GB。
+      en: 'System disk size of each node, range of values: 40-500, units: GB.'
+    MinValue: 40
+    MaxValue: 500
+    Label:
+      zh-cn: 系统盘空间
+      en: System Disk Space
+  NumberOfNode:
+    Description:
+      zh-cn: WordPress服务器数量
+      en: Number of WordPress instances.
+    Default: 3
+    MaxValue: 100
+    MinValue: 2
+    Label:
+      zh-cn: 服务器数量
+      en: Instances Amount
+    Type: Number
+  InternetMaxBandwidthOut:
+    Default: 10
+    Type: Number
+    Label:
+      zh-cn: 流量公网带宽
+      en: Internet Max Bandwidth Out
+    MinValue: 0
+    MaxValue: 100
+    Description:
+      zh-cn: 取值范围0-100
+      en: 'Internet Max Bandwidth Out,range of values: 0-100'
+  InternetChargeType:
+    Default: PayByTraffic
+    Type: String
+    Label:
+      zh-cn: 流量付费类型
+      en: Internet Charge Type
+    AllowedValues:
+    - PayByBandwidth
+    - PayByTraffic
+  InstancePassword:
+    NoEcho: true
+    Type: String
+    Description:
+      en: Server login password, Length 8-30, must contain three(Capital letters,
+        lowercase letters, numbers, ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ Special symbol
+        in)
+      zh-cn: 服务器登录密码,长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ 中的特殊符号）
+    AllowedPattern: "^[a-zA-Z0-9-\\(\\)\\`\\~\\!\\@\\#\\$\\%\\^\\&\\*\\_\\-\\+\\=\\|\\{\\}\\[\\]\\:\\;\\<\\>\\,\\.\\?\\/]*$"
+    Label:
+      en: Instance Password
+      zh-cn: 实例密码
+    ConstraintDescription:
+      en: Length 8-30, must contain three(Capital letters, lowercase letters, numbers,
+        ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ Special symbol in)
+      zh-cn: 长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ 中的特殊符号）
+    MinLength: 8
+    MaxLength: 30
+    AssociationProperty: ALIYUN::ECS::Instance::Password
+  DBInstanceClass:
+    Type: String
+    Label:
+      zh-cn: 实例规格
+      en: DB Instance Class
+    AssociationProperty: ALIYUN::RDS::Instance::InstanceType
+    AssociationPropertyMetadata:
+      Engine: MySQL
+      EngineVersion: 5.7
+      Category: "${DBCategory}"
+    Default: mysql.n2.medium.1
+    AllowedValues:
+    - mysql.n2.medium.1
+    - mysql.n4.medium.1
+    - mysql.n2.large.1
+    - mysql.n2.small.2c
+    - mysql.n2.medium.2c
+    - mysql.n4.medium.2c
+    Description:
+      zh-cn: 根据数据库引擎的类型和可用的区域支持选择实例规格；<br>请参见详细信息：<a href='https://help.aliyun.com/document_detail/26312.html'
+        target='_blank'><b><font color='blue'>实例规格表</font></b></a>
+      en: 'Select the instance specification based on the type of database engine
+        and the available area support;<br>see detail: <a href=''https://www.alibabacloud.com/help/doc-detail/26312.html''
+        target=''_blank''><b><font color=''blue''>Instance specification sheet</font></b></a>'
+  DBInstanceStorage:
+    Label:
+      zh-cn: 实例存储
+      en: Storage
+    Type: Number
+    Description:
+      zh-cn: RDS实例大小范围为20-2000，每5个增量，单位为GB
+      en: The size range of RDS instances is 20 - 2000, Incrementing in every 5, unit
+        GB
+    MinValue: 20
+    MaxValue: 2000
+    ConstraintDescription:
+      zh-cn: RDS实例大小范围为20-2000，每5个增量，单位为GB
+      en: The size range of RDS instances is 20 - 2000, Incrementing in every 5, unit
+        GB
+    Default: 50
+  DBCategory:
+    Label:
+      zh-cn: 实例系列
+      en: DB Category
+    Type: String
+    Default: Basic
+    AllowedValues:
+    - Basic
+    - HighAvailability
+    - AlwaysOn
+    - Finance
+    AssociationPropertyMetadata:
+      LocaleKey: RDSCategory
+  DBName:
+    Type: String
+    Description:
+      en: Name of WordPress database
+      zh-cn: WordPress数据库名
+    ConstraintDescription:
+      en: Consist of 2 to 64 characters of lowercase letters, underline. Must begin
+        with a letter and be end with an alphanumeric character
+      zh-cn: 由 2 到 64 个小写字母组成，下划线。必须以字母开头，以字母数字字符结尾
+    Label:
+      zh-cn: 数据库名
+      en: DB Name
+    Default: wordpress
+    MaxLength: 64
+    MinLength: 2
+  DBUser:
+    Type: String
+    Description:
+      en: Username of WordPress database
+      zh-cn: WordPress数据库账号
+    ConstraintDescription:
+      en: Consist of 2 to 16 characters of lowercase letters, underline. Must begin
+        with a letter and be end with an alphanumeric character
+      zh-cn: 由 2 到 16 个小写字母组成，下划线。必须以字母开头，以字母数字字符结尾
+    Label:
+      zh-cn: 数据库账号
+      en: DB Username
+    Default: wpuser
+    MaxLength: 16
+    MinLength: 2
+  DBPassword:
+    Type: String
+    Description:
+      en: WordPress database password, consisting of letters, numbers, and underline(_),
+        is 8 to 32 characters long
+      zh-cn: WordPress数据库账号密码，由字母、数字、下划线（_）组成，长度为8~32个字符
+    ConstraintDescription:
+      en: Length 8-30, must contain three(Capital letters, lowercase letters, numbers,
+        ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ Special symbol in)
+      zh-cn: 长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ 中的特殊符号）
+    AllowedPattern: "^[a-zA-Z0-9-\\(\\)\\`\\~\\!\\@\\#\\$\\%\\^\\&\\*\\_\\-\\+\\=\\|\\{\\}\\[\\]\\:\\;\\<\\>\\,\\.\\?\\/]*$"
+    Label:
+      zh-cn: 数据库密码
+      en: DB Password
+    MaxLength: 32
+    MinLength: 8
+    NoEcho: true
+  LoadBalancerSpec:
+    Type: String
+    AssociationProperty: ALIYUN::SLB::Instance::InstanceType
+    Label:
+      en: LoadBalancer Specifications
+      zh-cn: 负载均衡实例规格
+    Description:
+      en: By default, a private SLB instance will be created for the wordpress.
+      zh-cn: 默认将为 wordpress 创建一个私网 SLB 实例，用户可修改SLB实例规格.
+    AssociationPropertyMetadata:
+      ZoneId: "${ZoneId}"
+  WordPressPort:
+    Type: Number
+    Description:
+      en: WordPress Url Listen Port
+      zh-cn: WordPress网站监听端口号
+    Label:
+      zh-cn: WordPress 监听端口号
+      en: WordPress Listen Port
+    Default: 8080
+    MaxValue: 65535
+    MinValue: 0
+Metadata:
+  ALIYUN::ROS::Interface:
+    ParameterGroups:
+    - Parameters:
+      - PayType
+      - PayPeriodUnit
+      - PayPeriod
+      Label:
+        default:
+          en: PayType Configuration
+          zh-cn: 付费类型配置
+    - Parameters:
+      - EcsInstanceType
+      - SystemDiskSize
+      - InternetChargeType
+      - InternetMaxBandwidthOut
+      - NumberOfNode
+      - InstancePassword
+      Label:
+        default:
+          en: Instance Configuration
+          zh-cn: ECS实例配置
+    - Parameters:
+      - LoadBalancerSpec
+      Label:
+        default:
+          zh-cn: 负载均衡配置
+          en: Slb Configuration
+    - Parameters:
+      - DBCategory
+      - DBInstanceClass
+      - DBInstanceStorage
+      - DBName
+      - DBUser
+      - DBPassword
+      Label:
+        default:
+          en: RDS Configurate
+          zh-cn: 数据库配置
+    - Parameters:
+      - WordPressPort
+      Label:
+        default:
+          en: WordPress Configuration
+          zh-cn: WordPress配置
