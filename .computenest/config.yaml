@@ -32,6 +32,9 @@ Service:
         '{{ computenest::file::wordpress }}':
           ArtifactId: ${Artifact.Artifact_1.ArtifactId}
           ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
+    TemplateConfigs:
+      - Name: 高可用版
+        ArchitectureDiagramUrl: 'docs/architecture.png'
   ServiceType: managed
   ServiceInfo:
     Locale: zh-CN
