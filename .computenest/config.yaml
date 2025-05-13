@@ -54,8 +54,8 @@ Service:
 Artifact:
   Artifact_1:
     ArtifactType: File
-    ArtifactName: WordPress
-    Description: WordPress
+    ArtifactName: WordPressFile
+    Description: WordPressFile
     ArtifactProperty:
       RegionId: cn-hangzhou
       Url: 'resources/artifact_resources/file/wordpress-6.2-zh_CN.tar.gz'
