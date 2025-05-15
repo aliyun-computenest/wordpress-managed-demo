@@ -1,7 +1,4 @@
 ROSTemplateFormatVersion: '2015-09-01'
-Description:
-  zh-cn: 创建WordPress集群
-  en: Creates a wordpress cluster
 Parameters:
   PayType:
     Type: String

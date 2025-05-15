@@ -23,21 +23,6 @@
 
 测试本服务构建无需任何费用，创建服务实例涉及的费用参考服务实例计费说明。
 
-## RAM账号所需权限
-
-本服务需要对ECS、VPC等资源进行访问和创建操作，若您使用RAM用户创建服务实例，需要在创建服务实例前，对使用的RAM用户的账号添加相应资源的权限。添加RAM权限的详细操作，请参见[为RAM用户授权](https://help.aliyun.com/document_detail/121945.html)
-。所需权限如下表所示。
-
-| 权限策略名称                              | 备注                          |
-|-------------------------------------|-----------------------------|
-| AliyunECSFullAccess                 | 管理云服务器服务（ECS）的权限            |
-| AliyunVPCFullAccess                 | 管理专有网络（VPC）的权限              |
-| AliyunROSFullAccess                 | 管理资源编排服务（ROS）的权限            |
-| AliyunSLBFullAccess                 | 管理负载均衡服务(SLB)的权限            |
-| AliyunCloudMonitorFullAccess        | 管理云监控（CloudMonitor）的权限      |
-| AliyunComputeNestUserFullAccess     | 管理计算巢服务（ComputeNest）的用户侧权限  |
-| AliyunComputeNestSupplierFullAccess | 管理计算巢服务（ComputeNest）的服务商侧权限 |
-
 ## 服务实例计费说明
 
 测试本服务在计算巢上的费用主要涉及：
