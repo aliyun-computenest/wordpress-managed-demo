@@ -88,16 +88,10 @@ Parameters:
     AssociationProperty: ALIYUN::ECS::Instance::InstanceType
     AssociationPropertyMetadata:
       ZoneId: ${ZoneId}
-      InstanceChargeType: ${InstanceChargeType}
-    AllowedValues:
-      - ecs.g6.large
-      - ecs.g6.xlarge
-      - ecs.g6.2xlarge
-      - ecs.g6.4xlarge
-      - ecs.g7.large
-      - ecs.g7.xlarge
-      - ecs.g7.2xlarge
-      - ecs.g7.4xlarge
+      InstanceChargeType: ${PayType}
+      Constraints:
+        InstanceTypeFamily:
+          - ecs.u1
   SystemDiskSize:
     Default: 40
     Type: Number
