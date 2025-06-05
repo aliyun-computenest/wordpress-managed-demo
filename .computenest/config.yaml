@@ -30,8 +30,7 @@ Service:
                     VSwitchId: ${VSwitchId}
       FileArtifactRelation:
         '{{ computenest::file::wordpress }}':
-          ArtifactId: ${Artifact.Artifact_1.ArtifactId}
-          ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
+          ArtifactId: artifact-f75ad63afcb744beaaf8
     TemplateConfigs:
       - Name: 高可用版
         ArchitectureDiagramUrl: 'docs/architecture.png'
@@ -51,11 +50,3 @@ Service:
           - Start
           - Stop
           - Restart
-Artifact:
-  Artifact_1:
-    ArtifactType: File
-    ArtifactName: WordPressFile
-    Description: WordPressFile
-    ArtifactProperty:
-      RegionId: cn-hangzhou
-      Url: 'resources/artifact_resources/file/wordpress-6.2-zh_CN.tar.gz'
