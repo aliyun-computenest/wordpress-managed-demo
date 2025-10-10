@@ -481,6 +481,9 @@ Resources:
       Timeout: 3600
   EcsInstanceGroup:
     Type: ALIYUN::ECS::InstanceGroup
+    UpdatePolicy:
+      RollingUpdateForOrigInstances:
+        MaxBatchSize: 1
     Properties:
       ZoneId:
         Ref: ZoneId
